@@ -11,3 +11,5 @@ export * from './interfaces/seller.interface';
 export { uploads, videoUpload } from './cloudinary-upload';
 
 export * from './error-handler';
+
+export { verifyGatewayRequest } from './gateway-middleware';
