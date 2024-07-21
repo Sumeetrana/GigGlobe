@@ -22,7 +22,7 @@
   "author": "Sumeet Rana",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "gist+https://github.com/Sumeetrana/GigGlobe.git"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
