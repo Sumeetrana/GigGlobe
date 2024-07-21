@@ -9,3 +9,5 @@ export * from './interfaces/search.interface';
 export * from './interfaces/seller.interface';
 
 export { uploads, videoUpload } from './cloudinary-upload';
+
+export * from './error-handler';
