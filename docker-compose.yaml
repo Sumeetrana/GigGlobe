@@ -31,3 +31,15 @@ services:
       - MYSQL_DATABASE=gigglobe_auth
     volumes:
       - ./docker-volumes/mysql:/var/lib/mysql
+  postgres:
+    container_name: postgres_container
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=api
+      - POSTGRES_USER=gigglobe
+      - POSTGRES_DATABASE=gigglobe_reviews
+    volumes:
+      - ./docker-volumes/postgres:/var/lib/postgresql
