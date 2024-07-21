@@ -43,3 +43,12 @@ services:
       - POSTGRES_DATABASE=gigglobe_reviews
     volumes:
       - ./docker-volumes/postgres:/var/lib/postgresql
+  rabbitmq:
+    container_name: rabbitmq_container
+    image: rabbitmq:3.13-rc-management-alpine
+    restart: always
+    ports:
+      # AMQP protocol port
+      - "5672:5672"
+      # Management UI - Dashboard
+      - "15672:15672"
