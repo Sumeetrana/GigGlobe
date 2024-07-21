@@ -17,3 +17,17 @@ services:
       - 27017:27017
     volumes:
       - ./docker-volumes/data:/data/db
+  mysql:
+    container_name: mysql_container
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - "3603:3603"
+    environment:
+      - MYSQL_ROOT_PASSWORD=api
+      - MYSQL_PASSWORD=api
+      - MYSQL_USER=gigglobe
+      - MYSQL_DATABASE=gigglobe_auth
+    volumes:
+      - ./docker-volumes/mysql:/var/lib/mysql
