@@ -5,6 +5,7 @@ import { Application } from "express";
 import http from "http";
 
 import { config } from "./config";
+import { healthRoutes } from "./routes";
 
 const SERVER_PORT = 4001;
 const log: Logger = winstonLogger(
@@ -15,6 +16,7 @@ const log: Logger = winstonLogger(
 
 export function start(app: Application): void {
   startServer(app);
+  app.use("", healthRoutes);
   startQueues();
   startElasticSearch();
 }
