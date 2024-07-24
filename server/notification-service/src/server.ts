@@ -6,6 +6,7 @@ import http from "http";
 
 import { config } from "./config";
 import { healthRoutes } from "./routes";
+import { checkConnection } from "./elasticsearch";
 
 const SERVER_PORT = 4001;
 const log: Logger = winstonLogger(
@@ -23,7 +24,9 @@ export function start(app: Application): void {
 
 async function startQueues(): Promise<void> {}
 
-function startElasticSearch(): void {}
+function startElasticSearch(): void {
+  checkConnection();
+}
 
 function startServer(app: Application): void {
   try {
