@@ -17,6 +17,7 @@
     "email-templates": "^12.0.1",
     "express": "^4.19.2",
     "express-async-errors": "^3.1.1",
+    "gig-globe-helper-library": "0.0.1",
     "http-status-codes": "^2.3.0",
     "nodemailer": "^6.9.14",
     "pino-pretty": "^11.2.1",
