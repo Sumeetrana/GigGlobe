@@ -16,7 +16,8 @@ class Config {
     this.SENDER_EMAIL = process.env.SENDER_EMAIL || "";
     this.SENDER_EMAIL_PASSWORD = process.env.SENDER_EMAIL_PASSWORD || "";
     this.RABBITMQ_ENDPOINT = process.env.RABBITMQ_ENDPOINT || "";
-    this.ELASTIC_SEARCH_URL = process.env.ELASTIC_SEARCH_URL || "";
+    this.ELASTIC_SEARCH_URL =
+      process.env.ELASTIC_SEARCH_URL || "http://localhost:9201";
   }
 }
 
