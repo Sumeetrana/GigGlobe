@@ -1,6 +1,4 @@
-import dotenv from "dotenv";
-
-dotenv.config({});
+import "dotenv/config";
 
 class Config {
   public NODE_ENV: string | undefined;
@@ -11,13 +9,13 @@ class Config {
   public ELASTIC_SEARCH_URL: string | undefined;
 
   constructor() {
+    console.log(process.env.NODE_ENV);
     this.NODE_ENV = process.env.NODE_ENV || "";
     this.CLIENT_URL = process.env.CLIENT_URL || "";
     this.SENDER_EMAIL = process.env.SENDER_EMAIL || "";
     this.SENDER_EMAIL_PASSWORD = process.env.SENDER_EMAIL_PASSWORD || "";
     this.RABBITMQ_ENDPOINT = process.env.RABBITMQ_ENDPOINT || "";
-    this.ELASTIC_SEARCH_URL =
-      process.env.ELASTIC_SEARCH_URL || "http://localhost:9201";
+    this.ELASTIC_SEARCH_URL = process.env.ELASTIC_SEARCH_URL || "";
   }
 }
 
