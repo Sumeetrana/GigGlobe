@@ -9,7 +9,10 @@ import { config } from "./config";
 import { healthRoutes } from "./routes";
 import { checkConnection } from "./elasticsearch";
 import { createConnection } from "@notifications/queues/connection";
-import { consumeAuthEmailMessages } from "@notifications/queues/email.consumer";
+import {
+  consumeAuthEmailMessages,
+  consumeOrderEmailMessages,
+} from "@notifications/queues/email.consumer";
 
 const SERVER_PORT = 4001;
 const log: Logger = winstonLogger(
@@ -28,15 +31,28 @@ export function start(app: Application): void {
 async function startQueues(): Promise<void> {
   const emailChannel: Channel = (await createConnection()) as Channel;
   await consumeAuthEmailMessages(emailChannel);
+  await consumeOrderEmailMessages(emailChannel);
+
   await emailChannel.assertExchange("gig-globe-email-notification", "direct");
   const message = JSON.stringify({
     name: "GigGlobe",
-    service: "notification service",
+    service: "auth notification service",
   });
   emailChannel.publish(
     "gig-globe-email-notification",
     "auth-email",
     Buffer.from(message)
+  );
+
+  await emailChannel.assertExchange("gig-globe-order-notification", "direct");
+  const message1 = JSON.stringify({
+    name: "GigGlobe",
+    service: "order notification service",
+  });
+  emailChannel.publish(
+    "gig-globe-order-notification",
+    "order-email",
+    Buffer.from(message1)
   );
 }
 
