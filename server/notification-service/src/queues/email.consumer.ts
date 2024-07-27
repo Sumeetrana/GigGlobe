@@ -1,9 +1,10 @@
 import { Channel, ConsumeMessage } from "amqplib";
-import { winstonLogger } from "gig-globe-helper-library";
+import { IEmailLocals, winstonLogger } from "gig-globe-helper-library";
 import { Logger } from "winston";
 
 import { config } from "@notifications/config";
 import { createConnection } from "@notifications/queues/connection";
+import { sendEmail } from "@notifications/queues/mail.transport";
 
 const log: Logger = winstonLogger(
   `${config.ELASTIC_SEARCH_URL}`,
@@ -34,8 +35,70 @@ const consumeAuthEmailMessages = async (channel: Channel): Promise<void> => {
     await channel.bindQueue(gigGlobeQueue.queue, exchangeName, routingkey);
 
     channel.consume(gigGlobeQueue.queue, async (msg: ConsumeMessage | null) => {
-      console.log(JSON.parse(msg!.content.toString()));
+      const {
+        receiverEmail,
+        username,
+        verifyLink,
+        resetLink,
+        template,
+        sender,
+        total,
+        serviceFee,
+        message,
+        type,
+        header,
+        subject,
+        reason,
+        newDate,
+        originalDate,
+        orderUrl,
+        requirements,
+        orderDue,
+        orderId,
+        deliveryDays,
+        description,
+        buyerUsername,
+        sellerUsername,
+        title,
+        offerLink,
+        amount,
+      } = JSON.parse(msg!.content.toString());
+
       // send emails
+      const locals: IEmailLocals = {
+        appLink: `${config.CLIENT_URL}`,
+        appIcon: "https://i.ibb.co/Kyp2m0t/cover.png",
+        username,
+        verifyLink,
+        resetLink,
+        sender,
+        offerLink,
+        amount,
+        buyerUsername,
+        sellerUsername,
+        title,
+        description,
+        deliveryDays,
+        orderId,
+        orderDue,
+        requirements,
+        orderUrl,
+        originalDate,
+        newDate,
+        reason,
+        subject,
+        header,
+        type,
+        message,
+        total,
+        serviceFee,
+      };
+      if (template === "orderPlaced") {
+        await sendEmail("orderPlaced", receiverEmail, locals);
+        await sendEmail("orderReceipt", receiverEmail, locals);
+      } else {
+        await sendEmail(template, receiverEmail, locals);
+      }
       // acknowledge
       channel.ack(msg!);
     });
@@ -71,8 +134,19 @@ const consumeOrderEmailMessages = async (channel: Channel): Promise<void> => {
     await channel.bindQueue(gigGlobeQueue.queue, exchangeName, routingkey);
 
     channel.consume(gigGlobeQueue.queue, async (msg: ConsumeMessage | null) => {
-      console.log(JSON.parse(msg!.content.toString()));
+      const { receiverEmail, username, verifyLink, resetLink, template } =
+        JSON.parse(msg!.content.toString());
+
       // send emails
+      const locals: IEmailLocals = {
+        appLink: `${config.CLIENT_URL}`,
+        appIcon: "https://i.ibb.co/Kyp2m0t/cover.png",
+        username,
+        verifyLink,
+        resetLink,
+      };
+      await sendEmail(template, receiverEmail, locals);
+
       // acknowledge
       channel.ack(msg!);
     });
