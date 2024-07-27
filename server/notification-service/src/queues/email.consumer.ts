@@ -37,6 +37,7 @@ const consumeAuthEmailMessages = async (channel: Channel): Promise<void> => {
       console.log(JSON.parse(msg!.content.toString()));
       // send emails
       // acknowledge
+      channel.ack(msg!);
     });
   } catch (error) {
     log.log(

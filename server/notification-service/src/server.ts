@@ -3,11 +3,13 @@ import { Logger } from "winston";
 import { winstonLogger } from "gig-globe-helper-library";
 import { Application } from "express";
 import http from "http";
+import { Channel } from "amqplib";
 
 import { config } from "./config";
 import { healthRoutes } from "./routes";
 import { checkConnection } from "./elasticsearch";
 import { createConnection } from "@notifications/queues/connection";
+import { consumeAuthEmailMessages } from "@notifications/queues/email.consumer";
 
 const SERVER_PORT = 4001;
 const log: Logger = winstonLogger(
@@ -24,7 +26,18 @@ export function start(app: Application): void {
 }
 
 async function startQueues(): Promise<void> {
-  await createConnection();
+  const emailChannel: Channel = (await createConnection()) as Channel;
+  await consumeAuthEmailMessages(emailChannel);
+  await emailChannel.assertExchange("gig-globe-email-notification", "direct");
+  const message = JSON.stringify({
+    name: "GigGlobe",
+    service: "notification service",
+  });
+  emailChannel.publish(
+    "gig-globe-email-notification",
+    "auth-email",
+    Buffer.from(message)
+  );
 }
 
 function startElasticSearch(): void {
