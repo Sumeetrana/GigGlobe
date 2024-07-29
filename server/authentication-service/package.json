@@ -19,7 +19,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "typescript": "^5.5.4",
     "@elastic/elasticsearch": "^8.14.0",
     "amqplib": "^0.10.4",
     "axios": "^1.7.2",
@@ -37,7 +36,10 @@
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
+    "mysql2": "^3.11.0",
     "pino-pretty": "^11.2.1",
+    "sequelize": "^6.37.3",
+    "typescript": "^5.5.4",
     "typescript-transform-paths": "^3.4.7",
     "winston": "^3.13.1"
   },
