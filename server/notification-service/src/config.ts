@@ -9,7 +9,6 @@ class Config {
   public ELASTIC_SEARCH_URL: string | undefined;
 
   constructor() {
-    console.log(process.env.NODE_ENV);
     this.NODE_ENV = process.env.NODE_ENV || "";
     this.CLIENT_URL = process.env.CLIENT_URL || "";
     this.SENDER_EMAIL = process.env.SENDER_EMAIL || "";

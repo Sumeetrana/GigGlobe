@@ -19,18 +19,19 @@ services:
       - ./docker-volumes/data:/data/db
   mysql:
     container_name: mysql_container
-    image: mysql
-    command: --default-authentication-plugin=mysql_native_password
+    image: mysql:8
+    command: --mysql-native-password=ON
     restart: always
     ports:
-      - "3604:3603"
+      - "3306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=api
       - MYSQL_PASSWORD=api
       - MYSQL_USER=gigglobe
       - MYSQL_DATABASE=gigglobe_auth
     volumes:
-      - ./docker-volumes/mysql:/var/lib/mysql
+      - ./docker-volumes/mysql:/var/lib/mysql:rw
+    user: mysql
   postgres:
     container_name: postgres_container
     image: postgres
