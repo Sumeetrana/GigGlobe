@@ -22,6 +22,7 @@ import http from "http";
 
 import { config } from "@auth/config";
 import { checkConnection } from "@auth/elasticsearch";
+import { appRoutes } from "@auth/routes";
 
 const SERVER_PORT = 4002;
 const log: Logger = winstonLogger(
@@ -51,7 +52,7 @@ const securityMiddleware = (app: Application) => {
       methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     })
   );
-  app.use((req: Request, res: Response, next: NextFunction) => {
+  app.use((req: Request, _res: Response, next: NextFunction) => {
     if (req.headers.authorization) {
       const token = req.headers.authorization.split(" ")[1];
       const payload = verify(token, config.JWT_TOKEN!) as IAuthPayload;
@@ -67,7 +68,9 @@ const standardMiddleware = (app: Application): void => {
   app.use(urlencoded({ extended: true, limit: "200mb" }));
 };
 
-const routesMiddleware = (app: Application): void => {};
+const routesMiddleware = (app: Application): void => {
+  appRoutes(app);
+};
 
 const startQueues = async (): Promise<void> => {};
 
